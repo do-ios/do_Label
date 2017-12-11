@@ -23,6 +23,7 @@
 - (void)change_textFlag:(NSString *)newValue;
 - (void)change_linesSpace:(NSString *)newValue;
 - (void)change_shadow:(NSString *)newValue;
+- (void)change_padding:(NSString *)newValue;
 
 //同步或异步方法
 

@@ -40,6 +40,17 @@
         "Data": []
       }
     },
+     {
+     "ID": "padding",
+     "Name": "内边距",
+     "Type": "String",
+     "DefaultValue": "0,0,0,0",
+     "EditType": "0",
+     "Group": "",
+     "Description": "0,0,0,0 分别表示上，左，下，右的内边距",
+     "Design":
+     { "Type": "Text", "Data": [] }
+     },
     {
      "ID": "shadow",
      "Name": "阴影效果",

@@ -14,8 +14,13 @@
 #import "doIScriptEngine.h"
 #import "doTextHelper.h"
 #import "doDefines.h"
-
+#import "doServiceContainer.h"
+#import "doLogEngine.h"
 #define FONT_OBLIQUITY 15.0
+
+@interface do_Label_UIView()
+@property(nonatomic) UIEdgeInsets insets;
+@end
 
 @implementation do_Label_UIView
 {
@@ -36,6 +41,18 @@
     NSString *newText;
 }
 
+- (id) initWithInsets:(UIEdgeInsets)insets {
+    self = [super init];
+    if (self) {
+        self.insets = insets;
+    }
+    return self;
+}
+
+- (void) drawTextInRect:(CGRect)rect {
+    return [super drawTextInRect:UIEdgeInsetsInsetRect(rect, self.insets)];
+}
+
 #pragma mark - doIUIModuleView协议方法（必须）
 //引用Model对象
 - (void) LoadView: (doUIModule *) _doUIModule
@@ -53,7 +70,8 @@
     [self change_linesSpace:[_model GetProperty:@"linesSpace"].DefaultValue];
     newText = @"";
     [self change_shadow:[_model GetProperty:@"shadow"].DefaultValue];
-
+    //内边距默认值
+    self.insets = UIEdgeInsetsMake(0, 0, 0, 0);
 }
 //销毁所有的全局对象
 - (void) OnDispose
@@ -61,6 +79,7 @@
     _model = nil;
     _myFontStyle = nil;
     _myFontFlag = nil;
+    self.insets = UIEdgeInsetsMake(0, 0, 0, 0);
     //自定义的全局属性
 }
 //实现布局
@@ -140,6 +159,27 @@
  NSString *属性名 = [(doUIModule *)_model GetProperty:@"属性名"].DefaultValue;
  */
 
+- (void)change_padding:(NSString *)newValue
+{
+    if (![newValue containsString:@","]) {
+        [[doServiceContainer Instance].LogEngine WriteDebug:@"参数格式错误"];
+        return;
+    }
+    
+    NSArray * array = [newValue componentsSeparatedByString:@","];
+    if (array.count != 4) {
+        [[doServiceContainer Instance].LogEngine WriteDebug:@"参数格式错误"];
+        return;
+    } else {
+        CGFloat top = [[array objectAtIndex:0] floatValue]*_model.YZoom;
+        CGFloat left = [[array objectAtIndex:1] floatValue]*_model.XZoom;
+        CGFloat bottom = [[array objectAtIndex:2] floatValue]*_model.YZoom;
+        CGFloat right = [[array objectAtIndex:3] floatValue]*_model.XZoom;
+        
+        self.insets = UIEdgeInsetsMake(top, left, bottom, right);
+        [self setNeedsDisplay];
+    }
+}
 - (void)change_shadow:(NSString *)newValue
 {
     _myShadow = newValue;

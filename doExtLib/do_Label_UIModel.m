@@ -30,6 +30,7 @@
     [self RegistProperty:[[doProperty alloc] init:@"maxLines" :Number :@"1" :YES]];
     [self RegistProperty:[[doProperty alloc] init:@"linesSpace" :Number :@"0" :NO]];
     [self RegistProperty:[[doProperty alloc] init:@"shadow" :String :@"" :NO]];
+    [self RegistProperty:[[doProperty alloc] init:@"padding" :String :@"0,0,0,0" :YES]];
 
 }
 
